@@ -1,0 +1,49 @@
+class Result {
+    static int count = 0;
+    static List <Integer> res = new ArrayList<> ();
+
+    public static List<Integer> countGroups(List<List<Integer>> m, List<Integer> t){
+        int r = m.size();
+        int c = m.get(0).size();
+        boolean visited[][] = new boolean[r][c];
+        Map <Integer,Integer> hm =  new HashMap <Integer,Integer> ();
+        for(int i = 0; i < r; i++){
+           for(int j = 0; j < c; j++){
+                    count = 0;
+                    if(m.get(i).get(j) == 1 && visited[i][j] == false){
+                            findSize(m,visited,i,j,r,c);
+                    }
+                    if(hm.containsKey(count)){
+                        int value = hm.get(count);
+                        hm.put(count,value+1);
+                    }
+                    else{
+                        hm.put(count,1);
+                    }
+           }
+       }
+
+       for(int k = 0; k < t.size();k++){
+           if(hm.containsKey(t.get(k))){
+               res.add(hm.get(t.get(k)));
+           }
+           else{
+               res.add(0);
+           }
+       }
+       return res;
+    }
+    static void findSize(List<List<Integer>> m, boolean visited[][], int i,int j,int r,int c){
+        count++;
+        visited[i][j] = true;
+        int dir[][] = {{-1,0},{0,1},{1,0},{0,-1}};
+        for(int k = 0; k < 4; k++){
+            int newi = i + dir[k][0];
+            int newj = j + dir[k][1];
+            if(newi >= 0 && newi < r && newj >= 0 && newj < c && visited[newi][newj] == false && m.get(newi).get(newj)==1){
+                findSize(m,visited,newi,newj,r,c);
+            }
+        }
+    }
+
+}
